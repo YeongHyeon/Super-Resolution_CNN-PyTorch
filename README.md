@@ -1,4 +1,4 @@
-Super-Resolution CNN
+Super-Resolution CNN [PyTorch]
 =====
 
 PyTorch implementation of 'Image Super-Resolution using Deep Convolutional Network'. TensorFlow version is also provided in <a href="https://github.com/YeongHyeon/Super-Resolution_CNN">Related Repository</a>.
