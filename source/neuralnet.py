@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -32,4 +33,4 @@ class SRNET(nn.Module):
         )
 
     def forward(self, input):
-        return self.model(input)
+        return torch.clamp(self.model(input), min=1e-12, max=1-(1e-12))
