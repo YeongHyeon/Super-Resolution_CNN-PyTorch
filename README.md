@@ -23,7 +23,7 @@ The architecture constructed by three convolutional layers, and the kernel size 
 
 ## Requirements
 * Python 3.6.8  
-* Tensorflow 1.2.0  
+* PyTorch 1.2.0  
 * Numpy 1.14.0  
 * Matplotlib 3.1.1  
 
