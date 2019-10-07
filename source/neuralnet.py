@@ -5,9 +5,12 @@ import torch.optim as optim
 
 class NeuralNet(object):
 
-    def __init__(self, device):
+    def __init__(self, device, ngpu):
 
-        self.model = SRNET().to(device)
+        self.device, self.ngpu = device, ngpu
+        self.model = SRNET(self.ngpu).to(self.device)
+        if (self.device.type == 'cuda') and (self.model.ngpu > 0):
+            self.model = nn.DataParallel(self.model, list(range(self.model.ngpu)))
 
         num_params = 0
         for p in self.model.parameters():
@@ -16,13 +19,14 @@ class NeuralNet(object):
         print("The number of parameters: {}".format(num_params))
 
         self.mse = nn.MSELoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=1e-3)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=1e-5)
 
 class SRNET(nn.Module):
 
-    def __init__(self):
+    def __init__(self, ngpu):
         super(SRNET, self).__init__()
 
+        self.ngpu = ngpu
         self.model = nn.Sequential(
           nn.Conv2d(in_channels=3, out_channels=64, kernel_size=9, stride=1, padding=9//2),
           nn.ReLU(),
