@@ -1,5 +1,5 @@
 import os, argparse
-os.environ["CUDA_VISIBLE_DEVICES"]="3"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 import torch
 
@@ -12,7 +12,7 @@ stamper.print_stamp()
 def main():
 
     if(not(torch.cuda.is_available())): FLAGS.ngpu = 0
-    device = torch.device("cuda:0" if (torch.cuda.is_available() and FLAGS.ngpu > 0) else "cpu")
+    device = torch.device("cuda" if (torch.cuda.is_available() and FLAGS.ngpu > 0) else "cpu")
     srnet = nn.NeuralNet(device=device, ngpu=FLAGS.ngpu)
 
     dataset = dman.DataSet()
