@@ -63,6 +63,7 @@ def training(neuralnet, dataset, epochs, batch_size):
 
             img_recon = neuralnet.model(X_tr_t.to(neuralnet.device))
             mse = neuralnet.mse(input=X_tr_t.to(neuralnet.device), target=img_recon.to(neuralnet.device))
+            neuralnet.optimizer.zero_grad()
             mse.backward()
             neuralnet.optimizer.step()
 
