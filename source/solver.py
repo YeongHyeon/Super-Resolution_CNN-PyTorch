@@ -62,12 +62,12 @@ def training(neuralnet, dataset, epochs, batch_size):
             X_tr, Y_tr, X_tr_t, Y_tr_t, terminator = dataset.next_train(batch_size=batch_size)
 
             img_recon = neuralnet.model(X_tr_t.to(neuralnet.device))
-            mse = neuralnet.mse(input=Y_tr_t.to(neuralnet.device), target=img_recon.to(neuralnet.device))
+            mse = neuralnet.mse(input=img_recon.to(neuralnet.device), target=Y_tr_t.to(neuralnet.device))
             neuralnet.optimizer.zero_grad()
             mse.backward()
             neuralnet.optimizer.step()
 
-            loss_tr, psnr_tr = mse.item(), psnr(input=Y_tr_t.to(neuralnet.device), target=img_recon.to(neuralnet.device)).item()
+            loss_tr, psnr_tr = mse.item(), psnr(input=img_recon.to(neuralnet.device), target=Y_tr_t.to(neuralnet.device)).item()
             list_loss.append(loss_tr)
             list_psnr.append(psnr_tr)
 
@@ -81,7 +81,7 @@ def training(neuralnet, dataset, epochs, batch_size):
         X_tmp_t, Y_tmp_t = torch.from_numpy(X_tmp), torch.from_numpy(Y_tmp)
 
         img_recon = neuralnet.model(X_tmp_t.to(neuralnet.device))
-        tmp_psnr = psnr(input=X_tmp_t.to(neuralnet.device), target=img_recon.to(neuralnet.device)).item()
+        tmp_psnr = psnr(input=img_recon.to(neuralnet.device), target=Y_tmp_t.to(neuralnet.device)).item()
 
         X_tmp = np.transpose(X_tmp, (0, 2, 3, 1))
         Y_tmp = np.transpose(Y_tmp, (0, 2, 3, 1))
@@ -107,7 +107,7 @@ def training(neuralnet, dataset, epochs, batch_size):
 
         """static img(test)"""
         img_recon = neuralnet.model(X_static_t.to(neuralnet.device))
-        tmp_psnr = psnr(input=X_static_t.to(neuralnet.device), target=img_recon.to(neuralnet.device)).item()
+        tmp_psnr = psnr(input=img_recon.to(neuralnet.device), target=Y_static_t.to(neuralnet.device)).item()
         img_recon = np.transpose(torch2npy(img_recon.cpu()), (0, 2, 3, 1))
 
         list_psnr_static.append(tmp_psnr)
@@ -143,7 +143,7 @@ def validation(neuralnet, dataset):
         if(X_te is None): break
 
         img_recon = neuralnet.model(X_te_t.to(neuralnet.device))
-        tmp_psnr = psnr(input=Y_te_t.to(neuralnet.device), target=img_recon.to(neuralnet.device)).item()
+        tmp_psnr = psnr(input=img_recon.to(neuralnet.device), target=Y_te_t.to(neuralnet.device)).item()
         img_recon = np.transpose(torch2npy(img_recon.cpu()), (0, 2, 3, 1))
 
         img_recon = np.squeeze(img_recon, axis=0)

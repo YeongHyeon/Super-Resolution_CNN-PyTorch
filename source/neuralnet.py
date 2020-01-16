@@ -19,7 +19,7 @@ class NeuralNet(object):
         print("The number of parameters: {}".format(num_params))
 
         self.mse = nn.MSELoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=1e-5)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=1e-3)
 
 class SRNET(nn.Module):
 
