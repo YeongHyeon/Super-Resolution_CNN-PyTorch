@@ -102,7 +102,7 @@ def training(neuralnet, dataset, epochs, batch_size):
         plt.title("High-Resolution")
         plt.imshow(img_ground)
         plt.tight_layout(pad=1, w_pad=1, h_pad=1)
-        plt.savefig("%s/training/%d_psnr_%d.png" %(PACK_PATH, epoch, int(tmp_psnr)))
+        plt.savefig("%s/training/%09d_psnr_%d.png" %(PACK_PATH, epoch, int(tmp_psnr)))
         plt.close()
 
         """static img(test)"""
@@ -112,7 +112,7 @@ def training(neuralnet, dataset, epochs, batch_size):
 
         list_psnr_static.append(tmp_psnr)
         img_recon = np.squeeze(img_recon, axis=0)
-        plt.imsave("%s/static/reconstruction/%d_psnr_%d.png" %(PACK_PATH, epoch, int(tmp_psnr)), img_recon)
+        plt.imsave("%s/static/reconstruction/%09d_psnr_%d.png" %(PACK_PATH, epoch, int(tmp_psnr)), img_recon)
 
         print("Epoch [%d / %d] | Loss: %f  PSNR: %f" %(epoch, epochs, loss_tr, psnr_tr))
         torch.save(neuralnet.model.state_dict(), PACK_PATH+"/runs/params")
@@ -147,7 +147,7 @@ def validation(neuralnet, dataset):
         img_recon = np.transpose(torch2npy(img_recon.cpu()), (0, 2, 3, 1))
 
         img_recon = np.squeeze(img_recon, axis=0)
-        plt.imsave("%s/test/reconstruction/%d_psnr_%d.png" %(PACK_PATH, tidx, int(tmp_psnr)), img_recon)
+        plt.imsave("%s/test/reconstruction/%09d_psnr_%d.png" %(PACK_PATH, tidx, int(tmp_psnr)), img_recon)
 
         img_input = np.squeeze(X_te, axis=0)
         img_ground = np.squeeze(Y_te, axis=0)
